@@ -25,7 +25,7 @@ class ListingsController < ApplicationController
 
     respond_to do |format|
       if @listing.save
-        format.html { redirect_to listing_url(@listing), notice: "Listing was successfully created." }
+        format.html { redirect_to listing_url(@listing), notice: 'Listing was successfully created.' }
         format.json { render :show, status: :created, location: @listing }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class ListingsController < ApplicationController
   def update
     respond_to do |format|
       if @listing.update(listing_params)
-        format.html { redirect_to listing_url(@listing), notice: "Listing was successfully updated." }
+        format.html { redirect_to listing_url(@listing), notice: 'Listing was successfully updated.' }
         format.json { render :show, status: :ok, location: @listing }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -61,22 +61,23 @@ class ListingsController < ApplicationController
     url = 'https://rentals.ca/montreal'
     response = ListingsSpider.process(url)
     if response[:status] == :completed && response[:error].nil?
-      flash.now[:notice] = 'Successfully scraped url'
+      flash[:notice] = 'Successfully scraped url'
     else
-      flash.now[:alert] = response[:error]
+      flash[:alert] = response[:error]
     end
   rescue StandardError => e
-    flash.now[:alert] = "Error: #{e}"
+    flash[:alert] = "Error: #{e}"
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_listing
-      @listing = Listing.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def listing_params
-      params.require(:listing).permit(:address, :rent, :sqft, :bedrooms, :bathrooms)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_listing
+    @listing = Listing.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def listing_params
+    params.require(:listing).permit(:address, :rent, :sqft, :bedrooms, :bathrooms)
+  end
 end
