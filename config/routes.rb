@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  resources :listings
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :listings do
+    match '/scrape', to: 'listings#scrape', via: :post, on: :collection
+  end
+  root to: 'listings#index'
 end
